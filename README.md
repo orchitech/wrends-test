@@ -2,7 +2,7 @@
 
 Resources for performing Wren:DS system tests.
 
-## Test categories
+## Test Categories
 
 * access - ACI configuration and enforcement
 * audit - Tracking sensitive operations and generating audit logs
@@ -21,3 +21,10 @@ Resources for performing Wren:DS system tests.
 * limits - _TODO resource limits_
 * REST - REST API feature
 * schema - Schema management and enforcement
+
+# Test Environment
+
+Scripts in this repo are using environment variables loaded from `.env` file.
+The following variables are being used:
+
+* `WRENDS_HOME` - home directory of uninitialized Wren:DS instalation that is being tested
