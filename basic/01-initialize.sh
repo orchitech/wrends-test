@@ -18,12 +18,6 @@ echo "[TEST] Setting up server with sample data" 2>&1
         --no-prompt \
         --noPropertiesFile
 
-echo "[TEST] Checking server status" 2>&1
-
-"$WRENDS_HOME/bin/status" \
-        --bindDN "cn=Directory Manager" \
-        --bindPassword password
-
 echo "[TEST] Stopping server instance" 2>&1
 
 "$WRENDS_HOME/bin/stop-ds"
