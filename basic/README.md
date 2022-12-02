@@ -5,6 +5,7 @@ This folder contains test files for basic scenarios that can be found in Wren:DS
 ## Testing
 
 All the test files can be executed directly from this folder.
+Execute them in the numerical order as the name of the file suggests.
 
 ## Test files and their description
 
