@@ -1,0 +1,8 @@
+dn: uid=user.0,ou=Org-0,ou=People,dc=example,dc=com
+changetype: modify
+replace: description
+description: This is the NEW description for Aaren Atp.
+-
+replace: initials
+initials: CCC
+

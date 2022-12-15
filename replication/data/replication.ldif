@@ -1,0 +1,89 @@
+dn: dc=example,dc=com
+dc: example
+objectClass: top
+objectClass: domain
+
+dn: ou=People,dc=example,dc=com
+ou: People
+objectClass: top
+objectClass: organizationalUnit
+description: This is the People container
+telephoneNumber: +33 00010002
+
+dn: ou=Org-0,ou=People,dc=example,dc=com
+ou: Org-0
+objectClass: top
+objectClass: organizationalUnit
+description: This is the Org-0 organizational unit
+
+dn: uid=user.0,ou=Org-0,ou=People,dc=example,dc=com
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+givenName: Aaren
+sn: Atp
+cn: Aaren Atp
+initials: CCC
+employeenumber: 0
+uid: user.0
+mail: user.0@example.com
+userPassword: password
+telephoneNumber: +1 023 028 5404
+homephone: +1 033 536 8738
+pager: +1 382 529 8045
+mobile: +1 871 629 2162
+street: 65823 Spring Street
+l: Alexandria
+st: CT
+postalCode: 13880
+postalAddress: Aaren Atp$65823 Spring Street$Alexandria, CT  13880
+description: This is the NEW description for Aaren Atp.
+
+dn: uid=user.1,ou=Org-0,ou=People,dc=example,dc=com
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+givenName: Aarika
+sn: Atpco
+cn: Aarika Atpco
+initials: AGA
+employeenumber: 1
+uid: user.1
+mail: user.1@example.com
+userPassword: password
+telephoneNumber: +1 050 009 3730
+homephone: +1 740 609 6822
+pager: +1 255 800 2129
+mobile: +1 256 430 2265
+street: 02563 Fourteenth Street
+l: Seattle
+st: HI
+postalCode: 85080
+postalAddress: Aarika Atpco$02563 Fourteenth Street$Seattle, HI  85080
+description: This is the description for Aarika Atpco.
+
+dn: uid=user.10,ou=Org-0,ou=People,dc=example,dc=com
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+givenName: Abbi
+sn: Abbott
+cn: Abbi Abbott
+initials: AUA
+employeenumber: 10
+uid: user.10
+mail: user.10@example.com
+userPassword: password
+telephoneNumber: +1 012 209 6167
+homephone: +1 327 881 8908
+pager: +1 712 550 4290
+mobile: +1 806 016 4387
+street: 98371 Church Street
+l: Rockford
+st: IA
+postalCode: 50669
+postalAddress: Abbi Abbott$98371 Church Street$Rockford, IA  50669
+description: This is the description for Abbi Abbott.

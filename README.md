@@ -28,3 +28,4 @@ Scripts in this repo are using environment variables loaded from `.env` file.
 The following variables are being used:
 
 * `WRENDS_HOME` - home directory of uninitialized Wren:DS instalation that is being tested
+* `WRENDS_TEST` - directory for test files and utilities for Wren:DS
