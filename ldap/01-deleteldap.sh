@@ -1,17 +1,20 @@
 #!/bin/bash
 
-set -e
+. "$(dirname "${BASH_SOURCE[0]}")/../.common.sh"
 
-. "$(dirname "${BASH_SOURCE[0]}")/../.env"
+log_message "Search for data point (dc=example,dc=com)"
+exec_ds 1 bin/ldapsearch \
+    --port 1389 --bindDN "cn=Directory Manager"  --bindPassword password \
+    --baseDN dc=example,dc=com "(uid=user.0)" "uid" | expect_result
 
-echo "[TEST] Starting the server deleting data and stopping server." 2>&1
+log_message "Delete data point (uid=user.0,ou=People,dc=example,dc=com)"
+exec_ds 1 bin/ldapdelete \
+    --port 1389 --bindDN "cn=Directory Manager"  --bindPassword password \
+    uid=user.0,ou=People,dc=example,dc=com || fail_test "Unable to delete LDAP entry"
 
-"$WRENDS_HOME/bin/start-ds"
-"$WRENDS_HOME/bin/ldapdelete" \
-        --port 1389 \
-        --bindDn "cn=Directory Manager" \
-        --bindPassword password \
-        uid=user.0,ou=Org-0,ou=People,dc=example,dc=com
-"$WRENDS_HOME/bin/stop-ds"
+log_message "Search for data point (dc=example,dc=com)"
+exec_ds 1 bin/ldapsearch \
+    --port 1389 --bindDN "cn=Directory Manager"  --bindPassword password \
+    --baseDN dc=example,dc=com "(uid=user.0)" "uid" | expect_no_result
 
-echo "[TEST] Tests were all successful" 2>&1
+log_message "Tests were all successful"

@@ -1,17 +1,28 @@
 #!/bin/bash
 
-set -e
+. "$(dirname "${BASH_SOURCE[0]}")/../.common.sh"
 
-. "$(dirname "${BASH_SOURCE[0]}")/../.env"
+log_message "Starting backup operation"
+exec_ds 1 bin/backup --port 4444 --bindDN "cn=Directory Manager"  --bindPassword password \
+ --backUpAll --backupDirectory /opt/wrends/bak --start 0
 
-echo "[TEST] Stopping server and starting backup operation" 2>&1
+log_message "Delete data point (uid=user.0,ou=People,dc=example,dc=com)"
+exec_ds 1 bin/ldapdelete \
+    --port 1389 --bindDN "cn=Directory Manager"  --bindPassword password \
+    uid=user.0,ou=People,dc=example,dc=com || fail_test "Unable to delete LDAP entry"
 
-"$WRENDS_HOME/bin/stop-ds"
-"$WRENDS_HOME/bin/backup" \
-        --offline \
-        --backupDirectory "$WRENDS_HOME/bak" \
-        --bindDn "cn=Directory Manager" \
-        --bindPassword password \
-        --backupAll
+log_message "Search for data point (uid=user.0,ou=People,dc=example,dc=com)"
+exec_ds 1 bin/ldapsearch \
+    --port 1389 --bindDN "cn=Directory Manager"  --bindPassword password \
+    --baseDN dc=example,dc=com "(uid=user.0)" "uid" | expect_no_result
 
-echo "[TEST] All tests were successful" 2>&1
+log_message "Restoring backup"
+exec_ds 1 bin/restore --port 4444 --bindDN "cn=Directory Manager"  --bindPassword password \
+ --backupDirectory /opt/wrends/bak/userRoot --start 0
+
+log_message "Search for data point (uid=user.0,ou=People,dc=example,dc=com)"
+exec_ds 1 bin/ldapsearch \
+    --port 1389 --bindDN "cn=Directory Manager"  --bindPassword password \
+    --baseDN dc=example,dc=com  "(uid=user.0)" "uid" | expect_result
+
+log_message "All tests were successful"

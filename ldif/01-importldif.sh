@@ -1,23 +1,16 @@
 #!/bin/bash
 
-set -e
+. "$(dirname "${BASH_SOURCE[0]}")/../.common.sh"
 
-. "$(dirname "${BASH_SOURCE[0]}")/../.env"
+log_message "Copy template into Docker image"
+cp_ds ./ldif/template/example.template 1:/tmp
 
-echo "[TEST] Generating test LDIF data" 2>&1
+log_message "Generating ldif file based on copied template file."
+exec_ds 1 ./bin/makeldif --outputLdif /tmp/generated.ldif /tmp/example.template
 
-"$WRENDS_HOME/bin/makeldif" \
-        -o $WRENDS_TEST/ldif/data/generated.ldif \
-        $WRENDS_TEST/ldif/config/MakeLDIF/example.template
+log_message "Importing generated ldif file."
+exec_ds 1 ./bin/import-ldif \
+  --hostname localhost --port 4444 --trustAll --bindDN "cn=Directory Manager" --bindPassword password \
+  --includeBranch dc=example,dc=com --ldifFile /tmp/generated.ldif
 
-echo "[TEST] Stopping the server and importing LDIF data" 2>&1
-
-"$WRENDS_HOME/bin/stop-ds"
-"$WRENDS_HOME/bin/import-ldif" \
-        --offline \
-        --includeBranch dc=example,dc=com \
-        --backendID userRoot \
-        --ldifFile $WRENDS_TEST/ldif/data/generated.ldif
-
-echo "[TEST] Tests were all successful" 2>&1
-
+log_message "Tests were all successful"
