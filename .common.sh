@@ -79,3 +79,9 @@ function expect_result {
 function expect_no_result {
   grep 'dn: ' > /dev/null && fail_test "Expected no result" || :
 }
+
+function test_exit_code() {
+  EXITCODE=$?
+  test $EXITCODE -eq 0 && echo "Testing was succesful" || echo "Testing failed";
+  exit $EXITCODE
+}
