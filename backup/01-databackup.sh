@@ -7,12 +7,12 @@ exec_ds 1 bin/backup --port 4444 --bindDN "cn=Directory Manager"  --bindPassword
  --backUpAll --backupDirectory /opt/wrends/bak --start 0
 
 log_message "Delete data point (uid=user.0,ou=People,dc=example,dc=com)"
-exec_ds 1 bin/ldapdelete \
+exec_ds 1 ldapdelete \
     --port 1389 --bindDN "cn=Directory Manager"  --bindPassword password \
     uid=user.0,ou=People,dc=example,dc=com || fail_test "Unable to delete LDAP entry"
 
 log_message "Search for data point (uid=user.0,ou=People,dc=example,dc=com)"
-exec_ds 1 bin/ldapsearch \
+exec_ds 1 ldapsearch \
     --port 1389 --bindDN "cn=Directory Manager"  --bindPassword password \
     --baseDN dc=example,dc=com "(uid=user.0)" "uid" | expect_no_result
 
@@ -21,7 +21,7 @@ exec_ds 1 bin/restore --port 4444 --bindDN "cn=Directory Manager"  --bindPasswor
  --backupDirectory /opt/wrends/bak/userRoot --start 0
 
 log_message "Search for data point (uid=user.0,ou=People,dc=example,dc=com)"
-exec_ds 1 bin/ldapsearch \
+exec_ds 1 ldapsearch \
     --port 1389 --bindDN "cn=Directory Manager"  --bindPassword password \
     --baseDN dc=example,dc=com  "(uid=user.0)" "uid" | expect_result
 

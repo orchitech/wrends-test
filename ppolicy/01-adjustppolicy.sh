@@ -5,13 +5,13 @@
 # TODO check that password policy is not enforced
 
 log_message "Searching for custom password policy (Test Password Policy)"
-exec_ds 1 bin/dsconfig \
+exec_ds 1 dsconfig \
   --hostname localhost --port 4444 --bindDN "cn=Directory Manager"  --bindPassword password --trustAll --no-prompt \
   get-password-policy-prop \
   --policy-name "Test Password Policy" && :
 
 log_message "Creating new password policy (Test Password Policy)"
-exec_ds 1 bin/dsconfig --hostname localhost --port 4444 --bindDN "cn=Directory Manager"  --bindPassword password --trustAll --no-prompt \
+exec_ds 1 dsconfig --hostname localhost --port 4444 --bindDN "cn=Directory Manager"  --bindPassword password --trustAll --no-prompt \
   create-password-policy \
   --type password-policy \
   --policy-name "Test Password Policy" --set password-attribute:userPassword \
@@ -20,7 +20,7 @@ exec_ds 1 bin/dsconfig --hostname localhost --port 4444 --bindDN "cn=Directory M
   --set password-change-requires-current-password:true
 
 log_message "Searching again for custom password policy (Test Password Policy)"
-exec_ds 1 bin/dsconfig --hostname localhost --port 4444 --bindDN "cn=Directory Manager"  --bindPassword password --trustAll --no-prompt \
+exec_ds 1 dsconfig --hostname localhost --port 4444 --bindDN "cn=Directory Manager"  --bindPassword password --trustAll --no-prompt \
   get-password-policy-prop \
   --policy-name "Test Password Policy" && : || fail_test "Expected result"
 
