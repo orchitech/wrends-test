@@ -21,3 +21,29 @@ Resources for performing Wren:DS system tests.
 * limits - _TODO resource limits_
 * REST - REST API feature
 * schema - Schema management and enforcement
+
+
+## Running Tests
+
+Tests can be run manually by executing shell scripts in alphabetical order in their
+respective test category folder.
+
+Use `run.sh` shell script to run the whole test suite:
+
+```console
+$ ./run.sh
+```
+
+Tests are based on docker image of Wren:DS named `wrends`. This image name can be overriden
+with `WRENDS_IMAGE` environment variable:
+
+```console
+$ WRENDS_IMAGE=wrends-local ./run.sh
+```
+
+Failed tests can be resumed from a specific category with `RESUME_FROM` environment variable
+(be sure to cleanup leftover docker containers before resuming):
+
+```console
+$ RESUME_FROM=replication ./run.sh
+```

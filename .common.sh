@@ -37,7 +37,7 @@ start_ds() {
   docker run \
       -d --rm --name "wrends-test"$instance_id --network wrends \
       -p $instance_id"389:1389" -p $instance_id"636:1636" \
-      -e ADD_BASE_ENTRY="${ADDITIONAL_SETUP_ARGS:---addBaseEntry}" \
+      -e ADDITIONAL_SETUP_ARGS="${ADDITIONAL_SETUP_ARGS:---addBaseEntry}" \
       ${WRENDS_IMAGE:-wrends}
   while true; do
     check_ds $instance_id && break
@@ -49,14 +49,19 @@ start_ds() {
 
 check_ds() {
   local instance_id=${1:-1}
-  local status=$(docker exec -it "wrends-test"$instance_id bin/status -ns || :)
-  return $(echo $status | grep "Server Run Status: Started" > /dev/null)
+  # Call standard status command
+  local status=$(exec_ds $instance_id status -ns || :)
+  $(echo $status | grep "Server Run Status: Started" > /dev/null) || return 1
+  # Perform user backend search (it starts a bit later than the container)
+  exec_ds $instance_id ldapsearch --port 1389 \
+      --bindDN "cn=Directory Manager" --bindPassword password \
+      --baseDN "dc=example,dc=com" --searchScope one "(objectclass=*)" "dn" > /dev/null 2>&1
 }
 
 stop_ds() {
   local instance_id=${1:-1}
   log_message "Stopping Wren:DS test instance $instance_id..."
-  docker exec -i "wrends-test"$instance_id ./bin/stop-ds || :
+  docker stop "wrends-test"$instance_id
 }
 
 exec_ds() {
