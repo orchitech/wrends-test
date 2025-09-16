@@ -22,17 +22,18 @@ replace: description
 description: bar
 END
 
-read -r -d '' EXPECTED_OUTPUT <<'END' || :
-# Persistent search change type:  modify
+# Wait for output file to be populated
+for _ in {1..5}; do
+    [ -s "$search_output_path" ] && break
+    sleep 1
+done
+
+diff --ignore-blank-lines "$search_output_path" - <<< "# Persistent search change type:  modify
 dn: dc=example,dc=com
 objectClass: top
 objectClass: domain
 dc: example
-description: bar
-
-END
-
-[ "$(cat "$search_output_path")" = "$EXPECTED_OUTPUT" ] || fail_test "Captured modification mismatch"
+description: bar" || fail_test "Captured modification mismatch"
 
 log_message "Stopping persistent search job"
 
