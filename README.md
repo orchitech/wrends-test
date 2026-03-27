@@ -1,3 +1,6 @@
+> [!WARNING]
+> This repository has been migrated under [`wrensec-test`](https://github.com/orchitech/wrensec-test/) project.
+
 # Wren:DS System Test Resources
 
 Resources for performing Wren:DS system tests.
